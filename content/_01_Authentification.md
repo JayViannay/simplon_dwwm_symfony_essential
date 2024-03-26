@@ -4,7 +4,7 @@
 1. Présentation de l'authentification dans Symfony.
 2. Création de l'entité User.
 3. Configuration du système d'authentification.
-4. Création des formulaires de connexion et d'inscription.
+4. Création du formulaire et du controller d'inscription.
 5. Sécurisation des routes.
 6. Gestion des erreurs d'authentification.
 7. Gestion des rôles:
@@ -16,17 +16,16 @@
     - Gestion des utilisateurs via l'interface d'administration.
 
 
-#### 📚 Ressources: 📚 Ressources:
+#### 📚 Ressources: 
 - [Documentation Symfony: Authentification](https://symfony.com/doc/current/security.html)
 
 #### 📝 Users stories:
-1. En tant qu'acheteur|vendeur, je veux pouvoir m'inscrire sur la plateforme pour pouvoir acheter des produits.
-2. En tant qu'acheteur|vendeur, je veux pouvoir me connecter à mon compte pour accéder à mes informations.
-3. En tant qu'admin, je veux pouvoir me connecter à mon compte pour gérer les utilisateurs.
+- En tant qu'acheteur|vendeur, je veux pouvoir m'inscrire sur la plateforme pour pouvoir acheter des produits.
+- En tant qu'acheteur|vendeur, je veux pouvoir me connecter à mon compte pour accéder à mes informations.
+- En tant qu'admin, je veux pouvoir me connecter à mon compte pour gérer les utilisateurs.
 
 
 1. **Présentation de l'authentification dans Symfony:**
-
 L'authentification est un processus qui permet de vérifier l'identité d'un utilisateur. Dans Symfony, l'authentification est gérée par le composant de sécurité (Security Component). Ce composant fournit des fonctionnalités pour gérer l'authentification, l'autorisation et la gestion des utilisateurs.<br>
 📚 Ressources: [Documentation Symfony: Authentification](https://symfony.com/doc/current/security.html)
 
@@ -65,7 +64,6 @@ Next Steps:
 ```
 Une fois l'entité User créée, vous pouvez la personnaliser en ajoutant des propriétés et des méthodes selon vos besoins. Vous pouvez également ajouter des contraintes de validation, des relations avec d'autres entités, etc...<br>
 
-```bash
 Pour revenir sur l'entité User plus tard, vous pouvez utiliser la commande `make:entity` de Symfony CLI:
 ```bash
 symfony console make:entity

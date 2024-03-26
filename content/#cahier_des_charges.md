@@ -57,7 +57,7 @@ Application web de type marketplace pour la vente de produits en ligne.
    - (Redimensionnement des images. V2)
 
 #### 📌 Users stories :
---- Acheteur ---
+<br>--- Acheteur ---<br>
 1. En tant qu'acheteur, je veux pouvoir m'inscrire sur la plateforme pour pouvoir acheter des produits.
 2. En tant qu'acheteur, je veux pouvoir me connecter à mon compte pour accéder à mes informations.
 3. En tant qu'acheteur, je veux pouvoir consulter la liste des produits disponibles sur la plateforme.
@@ -72,7 +72,7 @@ Application web de type marketplace pour la vente de produits en ligne.
 12. En tant qu'acheteur, je veux pouvoir consulter ma wishlist pour voir les produits que j'ai ajoutés.
 13. En tant qu'acheteur, je veux pouvoir envoyer des messages à d'autres utilisateurs pour poser des questions ou discuter de produits.
 14. En tant qu'acheteur, je veux pouvoir consulter mes messages pour suivre mes conversations.
---- Vendeur ---
+<br>--- Vendeur ---<br>
 15. En tant que vendeur, je veux pouvoir m'inscrire sur la plateforme pour pouvoir vendre des produits.
 16. En tant que vendeur, je veux pouvoir me connecter à mon compte pour accéder à mes informations.
 17. En tant que vendeur, je veux pouvoir ajouter des produits à la plateforme pour les vendre.
@@ -82,7 +82,7 @@ Application web de type marketplace pour la vente de produits en ligne.
 21. En tant que vendeur, je veux pouvoir consulter les stocks de mes produits pour gérer les quantités.
 22. En tant que vendeur, je veux pouvoir ajouter/modifier des catégories pour classer mes produits.
 23. En tant que vendeur, je veux pouvoir consulter mes messages et y répondre pour communiquer avec les acheteurs.
---- Admin ---
+<br>--- Admin ---<br>
 24. En tant qu'admin, je veux pouvoir me connecter à la plateforme pour accéder à l'interface d'administration.
 25. En tant qu'admin, je veux pouvoir gérer les utilisateurs de la plateforme.
 26. En tant qu'admin, je veux pouvoir censurer des produits ou des utilisateurs.

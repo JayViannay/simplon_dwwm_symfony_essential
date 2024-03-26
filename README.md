@@ -24,7 +24,7 @@ Application web de type marketplace pour la vente de produits en ligne.
 - Présentation de l'authentification dans Symfony.
 - Création de l'entité User.
 - Configuration du système d'authentification.
-- Création des formulaires de connexion et d'inscription.
+- Création du formulaire et du controller d'inscription.
 - Sécurisation des routes.
 - Gestion des erreurs d'authentification.
 - Gestion des roles : 
