@@ -25,14 +25,7 @@ Application web de type marketplace pour la vente de produits en ligne.
 - Création de l'entité User.
 - Configuration du système d'authentification.
 - Création du formulaire et du controller d'inscription.
-- Sécurisation des routes.
-- Gestion des erreurs d'authentification.
-- Gestion des roles : 
-    - Introduction aux rôles dans Symfony.
-    - Création d'un User Admin.
-    - Mise en place de contrôles d'accès basés sur les rôles.
-    - Création d'un espace d'administration.
-    - Gestion des utilisateurs via l'interface d'administration.
+- Sécurisation des routes et gestion des rôles.
 
 ### 📍Chapitre 2: Fixtures
 - Présentation de Doctrine Fixtures.

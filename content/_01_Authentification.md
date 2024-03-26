@@ -5,16 +5,7 @@
 2. Création de l'entité User.
 3. Configuration du système d'authentification.
 4. Création du formulaire et du controller d'inscription.
-5. Sécurisation des routes.
-6. Gestion des erreurs d'authentification.
-7. Gestion des rôles:
-    - Introduction aux rôles dans Symfony.
-    - Ajout de rôles à l'entité User.
-    - Création d'un User Admin.
-    - Mise en place de contrôles d'accès basés sur les rôles.
-    - Création d'un espace d'administration.
-    - Gestion des utilisateurs via l'interface d'administration.
-
+5. Sécurisation des routes et gestion des rôles.
 
 #### 📚 Ressources: 
 - [Documentation Symfony: Authentification](https://symfony.com/doc/current/security.html)
@@ -235,17 +226,221 @@ Servez-vous du profiler Symfony pour voir si vous êtes bien connecté.
 📕 Ressources:
 [Profiler Symfony](https://symfony.com/doc/current/profiler.html)
 
-5. **Sécurisation des routes:**
+Si tout fonctionne jusqu'ici, vous pouvez enregister votre travail et faire un commit:
+```bash
+git add .
+git commit -m "Added authentication & registration system"
+```
 
-Pour sécuriser les routes de votre application, vous pouvez utiliser les annotations de sécurité dans vos contrôleurs. Par exemple, pour restreindre l'accès à une route à un utilisateur connecté, vous pouvez utiliser l'annotation `@IsGranted`:
+5. **Sécurisation des routes et gestion des rôles:**
+
+Notre application a besoin de plusieurs rôles pour gérer les différents types d'utilisateurs. La première étape consiste à assigner le bon rôle à chaque utilisateur au moment de l'inscription. 
+Pour cela, nous allons ajuster notre formulaire d'inscription et ajouter 1 champ supplémentaire pour les rôles `ROLE_SELLER` et `ROLE_BUYER`.
+
 ```php
-#[Route('/profile', name: 'app_profile')]
-#[IsGranted('ROLE_USER')]
-public function profile(): Response
+// src/Form/RegistrationFormType.php
+public function buildForm(FormBuilderInterface $builder, array $options): void
 {
-    // ...
+    $builder
+        ->add('email')
+        ->add('role', ChoiceType::class, [
+            'choices' => [
+                'Buyer' => 'ROLE_BUYER',
+                'Seller' => 'ROLE_SELLER',
+            ],
+            'expanded' => true,
+            'multiple' => false,
+            'mapped' => false,
+        ])
+        ->add('agreeTerms', CheckboxType::class, [
+            'mapped' => false,
+            'constraints' => [
+                new IsTrue([
+                    'message' => 'You should agree to our terms.',
+                ]),
+            ],
+        ])
+        ->add('plainPassword', PasswordType::class, [
+            // instead of being set onto the object directly,
+            // this is read and encoded in the controller
+            'mapped' => false,
+            'attr' => ['autocomplete' => 'new-password'],
+            'constraints' => [
+                new NotBlank([
+                    'message' => 'Please enter a password',
+                ]),
+                new Length([
+                    'min' => 6,
+                    'minMessage' => 'Your password should be at least {{ limit }} characters',
+                    // max length allowed by Symfony for security reasons
+                    'max' => 4096,
+                ]),
+            ],
+        ])
+    ;
+}
+
+```
+
+Puis nous allons ajuster notre contrôleur d'inscription pour assigner le rôle choisi par l'utilisateur lors de l'inscription:
+```php
+// src/Controller/RegistrationController.php
+#[Route('/register', name: 'app_register')]
+public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, Security $security, EntityManagerInterface $entityManager): Response
+{
+    $user = new User();
+    $form = $this->createForm(RegistrationFormType::class, $user);
+    $form->handleRequest($request);
+
+    if ($form->isSubmitted() && $form->isValid()) {
+        //handle user role
+        $user->setRoles([$form->get('role')->getData()]);
+        // encode the plain password
+        $user->setPassword(
+            $userPasswordHasher->hashPassword(
+                $user,
+                $form->get('plainPassword')->getData()
+            )
+        );
+
+        $entityManager->persist($user);
+        $entityManager->flush();
+
+        // do anything else you need here, like send an email
+
+        return $security->login($user, LoginFormAuthenticator::class, 'main');
+    }
+
+    return $this->render('registration/register.html.twig', [
+        'registrationForm' => $form,
+    ]);
+}
+``` 
+
+Maintenant que chaque utilisateur a un rôle qui lui est assigné lors de son inscription, nous allons  créer 2 controllers différents, un qui s'occupera de l'interface acheteurs et l'autre de l'interface vendeurs.
+
+```bash
+symfony console make:controller BuyerController
+symfony console make:controller SellerController
+```
+
+Pour sécuriser les routes de votre application, vous pouvez utiliser les annotations de sécurité dans vos contrôleurs. Par exemple, pour restreindre l'accès à une route à un utilisateur connecté, vous pouvez utiliser l'annotation `@IsGranted`. 
+
+Modifions nos controllers en ajustant nos URL et en sécurisant nos routes : 
+
+```php
+// src/Controller/BuyerController.php
+use Symfony\Component\Security\Http\Attribute\IsGranted;
+
+#[Route('/buyer', name: 'app_buyer_'), IsGranted('ROLE_BUYER')]
+class BuyerController extends AbstractController
+{
+    #[Route('/', name: 'index')]
+    public function index(): Response
+    {
+        return $this->render('buyer/index.html.twig', [
+            'controller_name' => 'BuyerController',
+        ]);
+    }
 }
 ```
 
-Notre application a besoin de plusieurs rôles pour gérer les différents types d'utilisateurs. La première étape consiste à assigner le bon rôle à chaque utilisateur au moment de l'inscription. 
+Pour le SellerController:
+```php
+// src/Controller/SellerController.php
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
+#[Route('/seller', name: 'app_seller_'), IsGranted('ROLE_SELLER')]
+class SellerController extends AbstractController
+{
+    #[Route('/', name: 'index')]
+    public function index(): Response
+    {
+        return $this->render('seller/index.html.twig', [
+            'controller_name' => 'SellerController',
+        ]);
+    }
+}
+```
+
+Modifions maintenant notre redirection après la connexion pour rediriger les utilisateurs vers la bonne interface en fonction de leur rôle.
+
+```php
+// src/Security/LoginFormAuthenticator.php
+public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
+{
+    if ($targetPath = $this->getTargetPath($request->getSession(), $firewallName)) {
+        return new RedirectResponse($targetPath);
+    }
+    // Redirect User with his role
+    if (in_array('ROLE_SELLER', $token->getRoleNames())) {
+        return new RedirectResponse($this->urlGenerator->generate('app_seller_index'));
+    }
+    if (in_array('ROLE_BUYER', $token->getRoleNames())) {
+        return new RedirectResponse($this->urlGenerator->generate('app_buyer_index'));
+    }
+
+    return new RedirectResponse($this->urlGenerator->generate('app_index'));
+}
+```
+
+Testez votre application en vous inscrivant en tant qu'acheteur ou vendeur et en vous connectant. Vous devriez être redirigé vers la bonne interface en fonction de votre rôle.
+
+Si tout est ok jusqu'à présent, occupons nous maintenant de créer un utilisateur admin.
+Pour cela, rendez vous sur votre application et inscrivez un utilisateur avec n'imprte quel rôle. Ensuite, connectez vous à votre base de données et modifiez le rôle de cet utilisateur en `ROLE_ADMIN`. 
+
+Vous pouvez également créer un formulaire d'inscription pour les utilisateurs admin, mais pour des raisons de simplicité, nous allons nous en tenir à cette méthode pour l'instant.
+
+Une fois que vous avez un utilisateur avec le rôle `ROLE_ADMIN`, nous allons créer un espace d'administration pour gérer les utilisateurs de l'application.
+
+```bash
+symfony console make:controller AdminController
+```
+
+Modifions notre controller comme suit :
+```php
+// src/Controller/AdminController.php
+use Symfony\Component\Security\Http\Attribute\IsGranted;
+
+#[Route('/admin', name: 'app_admin_'), IsGranted('ROLE_ADMIN')]
+class AdminController extends AbstractController
+{
+    #[Route('/', name: 'index')]
+    public function index(): Response
+    {
+        return $this->render('admin/index.html.twig', [
+            'controller_name' => 'AdminController',
+        ]);
+    }
+}
+```
+
+Maintenant ajustons notre redirection après la connexion :
+```php
+// src/Security/LoginFormAuthenticator.php
+[...]
+if (in_array('ROLE_ADMIN', $token->getRoleNames())) {
+    return new RedirectResponse($this->urlGenerator->generate('app_admin_index'));
+}
+[...]
+```
+
+Vous pouvez maintenant tester votre application en vous connectant en tant qu'admin. Vous devriez être redirigé vers l'interface d'administration après la connexion.
+Assurez vous également que les utilisateurs avec les rôles `ROLE_BUYER` et `ROLE_SELLER` ne peuvent pas accéder à l'interface d'administration.
+
+Terminons notre sécurisation des routes avec le fichier `security.yaml`:
+```yaml
+# config/packages/security.yaml
+access_control:
+    - { path: ^/admin, roles: ROLE_ADMIN }
+    - { path: ^/buyer, roles: ROLE_BUYER }
+    - { path: ^/seller, roles: ROLE_SELLER }
+```
+
+Retestez votre application pour vous assurer que les routes sont correctement sécurisées en fonction des rôles des utilisateurs.
+
+Si tout fonctionne jusqu'ici, vous pouvez enregister votre travail et faire un commit:
+```bash
+git add .
+git commit -m "Added roles to users and secured routes"
+```
