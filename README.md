@@ -27,10 +27,12 @@ Application web de type marketplace pour la vente de produits en ligne.
 - Création du formulaire et du controller d'inscription.
 - Sécurisation des routes et gestion des rôles.
 
-### 📍Chapitre 2: Fixtures
+### 📍Chapitre 2: Fixtures & Créations des Entités
 - Présentation de Doctrine Fixtures.
 - Installation et configuration.
-- Création de fixtures pour les utilisateurs et d'autres données initiales.
+- Création de fixtures pour les utilisateurs.
+- Création des entités Product & Category
+- Création des fixtures pour les produits et les catégories
 
 ### 📍Chapitre 3: Gestion d'un Panier en Session
 - Introduction à la gestion de session dans Symfony.
