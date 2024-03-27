@@ -1,4 +1,4 @@
-## Symfony 7: Les concepts essentiels by Jay
+## Symfony 7: Les concepts essentiels
 
 Ce tutoriel est une introduction au principales fonctionnalités de Symfony 7. Pas à pas, nous allons créer une application web complète avec des fonctionnalités telles que l'authentification, la gestion de panier, la messagerie, la pagination, et bien d'autres. <br>
 Nous nous baserons sur les bonnes pratiques de développement avec Symfony et nous aborderons des concepts avancés tels que les services, les variables d'environnement, et la gestion des fichiers.
