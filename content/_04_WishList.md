@@ -371,4 +371,7 @@ Dans le template du produit, nous pouvons maintenant afficher le nombre de fois 
 Maintenant, le nombre de fois que le produit a été "liké" sera affiché à côté du bouton. Vous pouvez continuer à améliorer cette fonctionnalité pour qu'elle s'adapte à vos besoins et à votre projet.
 
 ---
-Prochain chapitre: [Messagerie One User To One User](content/_05_Messaging.md) 👈
+
+Avancement bdd : [🏁](../screenshot/bdd_step4.png)
+
+#### 🚀 Prochain chapitre: [Messagerie One User To One User](content/_05_Messaging.md) 👈

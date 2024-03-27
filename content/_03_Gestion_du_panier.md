@@ -341,4 +341,4 @@ Vous pouvez améliorer cette fonctionnalité en ajoutant des fonctionnalités te
 Faite un commit et un push de votre code pour sauvegarder vos modifications.
 
 ---
-Prochain chapitre: [Wishlist](04_Wishlist.md) 👈
+#### 🚀 Prochain chapitre: [Wishlist](04_Wishlist.md) 👈

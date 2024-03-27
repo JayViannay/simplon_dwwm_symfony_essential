@@ -424,4 +424,6 @@ git add .
 git commit -m "Add fixtures for User Admin|Seller|Buyer Product & Category"
 ```
 
+Avancement bdd : [🏁](../screenshot/bdd_step2.png)
+
 #### 🚀 Prochain chapitre: [Gestion d'un Panier en Session](content/_03_Gestion_d_un_Panier_en_Session.md)

@@ -444,3 +444,9 @@ Si tout fonctionne jusqu'ici, vous pouvez enregister votre travail et faire un c
 git add .
 git commit -m "Added roles to users and secured routes"
 ```
+
+🚀 Vous avez maintenant un système d'authentification complet avec différents rôles pour les utilisateurs de votre application. Vous pouvez maintenant passer au chapitre suivant pour ajouter des fixtures et créer des entités pour votre application.
+
+Avancement bdd : [🏁](../screenshot/bdd_step1.png)
+
+👉 [Chapitre suivant: Fixtures & Créations des Entités](_02_Fixtures_Entites.md)
