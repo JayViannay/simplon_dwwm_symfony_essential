@@ -336,4 +336,9 @@ Dans ce template, nous affichons les produits du panier avec leur quantité, leu
 
 La fonctionnalité de gestion du panier est maintenant opérationnelle. Vous pouvez tester l'ajout et la suppression de produits dans le panier dans votre application Symfony. N'hésitez pas à personnaliser le design et les fonctionnalités du panier en fonction de vos besoins.
 
+Vous pouvez améliorer cette fonctionnalité en ajoutant des fonctionnalités telles que la modification de la quantité d'un produit dans le panier, l'affichage du nombre d'article dans le panier, etc...
+
 Faite un commit et un push de votre code pour sauvegarder vos modifications.
+
+---
+Prochain chapitre: [Wishlist](04_Wishlist.md) 👈
