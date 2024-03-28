@@ -89,85 +89,91 @@ Application web de type marketplace pour la vente de produits en ligne.
 
 #### 📌 Models de données :
 
+![Model BDD](../screenshot/Model_BDD.png)
+
 - User:
-    - id
-    - email
-    - password
-    - roles
-    - created_at
-    - updated_at
+    - id INT AUTO_INCREMENT PRIMARY KEY NOT NULL
+    - email VARCHAR(255) UNIQUE NOT NULL
+    - password VARCHAR(255) NOT NULL
+    - roles JSON NOT NULL
+    - created_at DATETIME NOT NULL
+    - updated_at DATETIME NOT NULL
 
-- Buyer:
-    - id
-    - user
-    - address
-    - first_name
-    - last_name
-    - phone
-    - created_at
-    - updated_at
+- Profile_Buyer:
+    - id INT AUTO_INCREMENT PRIMARY KEY NOT NULL
+    - user INT FOREIGN KEY REFERENCES User(id)
+    - address INT FOREIGN KEY REFERENCES Address(id)
+    - first_name VARCHAR(255) NOT NULL
+    - last_name VARCHAR(255) NOT NULL
+    - phone VARCHAR(255) NOT NULL
+    - created_at DATETIME NOT NULL
+    - updated_at DATETIME NOT NULL
 
-- Seller:
-    - id
-    - user
-    - address
-    - company_name
-    - description
-    - image
-    - created_at
-    - updated_at
+- Profile_Seller:
+    - id INT AUTO_INCREMENT PRIMARY KEY NOT NULL
+    - user INT FOREIGN KEY REFERENCES User(id)
+    - address INT FOREIGN KEY REFERENCES Address(id)
+    - company_name VARCHAR(255) NOT NULL
+    - description TEXT NOT NULL
+    - image VARCHAR(255) NOT NULL
+    - created_at DATETIME NOT NULL
+    - updated_at DATETIME NOT NULL
   
 - Address:
-    - id
-    - address
-    - city
-    - postal_code
-    - country
-    - created_at
-    - updated_at
+    - id INT AUTO_INCREMENT PRIMARY KEY NOT NULL
+    - address VARCHAR(255) NOT NULL
+    - city VARCHAR(255) NOT NULL
+    - postal_code VARCHAR(255) NOT NULL
+    - country VARCHAR(255) NOT NULL
+    - created_at DATETIME NOT NULL
+    - updated_at DATETIME NOT NULL
 
 - Product:
-    - id
-    - name
-    - description
-    - price
-    - stock
-    - category
-    - image
-    - created_at
-    - updated_at
+    - id INT AUTO_INCREMENT PRIMARY KEY NOT NULL
+    - name VARCHAR(255) NOT NULL
+    - description TEXT NOT NULL
+    - price FLOAT NOT NULL
+    - stock INT NOT NULL
+    - category INT FOREIGN KEY REFERENCES Category(id)
+    - image VARCHAR(255) NOT NULL
+    - user_seller INT FOREIGN KEY REFERENCES User(id)
+    - created_at DATETIME NOT NULL
+    - updated_at DATETIME NOT NULL
 
 - Category:
-    - id
-    - name
+    - id INT AUTO_INCREMENT PRIMARY KEY NOT NULL
+    - name VARCHAR(255) NOT NULL
 
 - Purchase:
-    - id
-    - user
-    - total_price
-    - status
-    - created_at
-    - updated_at
+    - id INT AUTO_INCREMENT PRIMARY KEY NOT NULL
+    - user INT FOREIGN KEY REFERENCES User(id)
+    - total_price FLOAT NOT NULL
+    - status INT FOREIGN KEY REFERENCES PurchaseStatus(id)
+    - created_at DATETIME NOT NULL
+    - updated_at DATETIME NOT NULL
 
 - PurchaseItem:
-    - id
-    - purchase
-    - product
-    - quantity
-    - price
+    - id INT AUTO_INCREMENT PRIMARY KEY NOT NULL
+    - purchase INT FOREIGN KEY REFERENCES Purchase(id)
+    - product INT FOREIGN KEY REFERENCES Product(id)
+    - quantity INT NOT NULL
+
+- PurchaseStatus:
+    - id INT AUTO_INCREMENT PRIMARY KEY NOT NULL
+    - state VARCHAR(255) NOT NULL
 
 - Message:
-  - id
-  - conversation
-  - text
-  - author
-  - created_at
+  - id INT AUTO_INCREMENT PRIMARY KEY NOT NULL
+  - conversation INT FOREIGN KEY REFERENCES Conversation(id)
+  - text TEXT NOT NULL
+  - author INT FOREIGN KEY REFERENCES User(id)
+  - created_at DATETIME NOT NULL
 
 - Conversation:
-  - id
-  - buyer
-  - seller
-  - product
-  - created_at
-  - updated_at
-  - last_message_id
+  - id INT AUTO_INCREMENT PRIMARY KEY NOT NULL
+  - user_buyer INT FOREIGN KEY REFERENCES User(id)
+  - user_seller INT FOREIGN KEY REFERENCES User(id)
+  - product INT FOREIGN KEY REFERENCES Product(id)
+  - created_at DATETIME NOT NULL
+  - updated_at DATETIME NOT NULL
+  - last_message_id INT FOREIGN KEY REFERENCES Message(id)
